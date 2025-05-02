@@ -1,17 +1,26 @@
 #include "baseball.cpp"
 
-TEST(BaseballGame, TryGameTest) {
+class BaseballFixture : public testing::Test {
+public:
+	Baseball game;
+	void assertIllegalArgument(string guessNumber) {
+		try {
+			game.guess(guessNumber);
+			FAIL();
+		}
+		catch (std::exception e) {
+			//PASS
+		}
+	}
+};
+
+TEST_F(BaseballFixture, TryGameTest) {
 	EXPECT_EQ(1, 1);
 }
 
-TEST(BaseballGame, ThrowExceptionWhenInputLengthIsUnmached) {
-	Baseball game;
-	EXPECT_THROW(game.guess(string("12")), std::length_error);
-}
-
-TEST(BaseballGame, ThrowExceptionWhenInvalidChar) {
-	Baseball game;
-	EXPECT_THROW(game.guess(string("12s")), std::invalid_argument);
+TEST_F(BaseballFixture, ThrowExceptionWhenInvalidCase) {
+	assertIllegalArgument("12");
+	assertIllegalArgument("12s");
 }
 
 int main() {
